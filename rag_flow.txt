@@ -1,0 +1,29 @@
+┌─────────────────────────────────────────────────────────────────┐
+│                        1. INDEXING PHASE                        │
+└─────────────────────────────────────────────────────────────────┘
+
+PDFs → Chunks → Embeddings → Vector Database
+  ↓        ↓          ↓              ↓
+ 21 PDFs  321 pages  vectors       stored with
+                    (1536 dims)    metadata
+
+┌─────────────────────────────────────────────────────────────────┐
+│                        2. QUERY PHASE                           │
+└─────────────────────────────────────────────────────────────────┘
+
+User Question → Embedding → Vector Search → Relevant Chunks
+     ↓             ↓            ↓                ↓
+"What is     [0.2, -0.5,   Cosine       Top-k similar
+isolation    0.8, ...]    Similarity    chunks with
+forest?"                  Search        metadata
+
+┌─────────────────────────────────────────────────────────────────┐
+│                        3. GENERATION PHASE                      │
+└─────────────────────────────────────────────────────────────────┘
+
+Relevant Chunks + Question → LLM → Answer
+         ↓                       ↓         ↓
+    "Isolation Forest         GPT-4/    "Isolation Forest
+     is an anomaly            Claude    is an algorithm
+     detection..."                     that isolates
+                                       anomalies..."

@@ -1,0 +1,25 @@
+title,path,topics,subtopics
+LogAnMeta: Log Anomaly Detection Using Meta Learning,data/anomaly_detection_1.pdf,anomaly_detection,anomaly_detection'
+Fault Detection in Telecom Networks using Bi-level Federated Graph Neural Networks,data/anomaly_detection_2.pdf,anomaly_detection,"fault_detection', 'graph_neural_networks', 'anomaly_detection'"
+Fault Detection in Mobile Networks Using Diffusion Models,data/anomaly_detection_3.pdf,anomaly_detection,"fault_detection', 'diffusion_models', 'anomaly_detection'"
+Data Drift Detection Using Hierarchical Temporal Memory and Sequential Probability Ratio Test,data/anomaly_detection_4.pdf,anomaly_detection,"data_drift_detection', 'anomaly_detection'"
+MobiLLM: An Agentic AI Framework for Closed-Loop Threat Mitigation in 6G Open RANs,data/anomaly_detection_5.pdf,anomaly_detection,"llm_for_network_security', 'threat_mitigation', 'anomaly_detection'"
+Balancing Performance and Fairness in Explainable AI for Anomaly Detection in Distributed Power Plants Monitoring,data/anomaly_detection_6.pdf,anomaly_detection,"anomaly_detection', 'explainable_ai', 'fairness'"
+Hybrid Isolation Forest - Application to Intrusion Detection,data/isolation_forest_svm_1.pdf,isolation_forest_svm,"isolation_forest', 'anomaly_detection', 'intrusion_detection', 'svm'"
+An Isolation Forest Learning Based Outlier Detection Approach for Effectively Classifying Cyber Anomalies,data/isolation_forest_svm_2.pdf,isolation_forest_svm,"isolation_forest', 'outlier_detection', 'cybersecurity', 'svm'"
+Deep Isolation Forest for Anomaly Detection,data/isolation_forest_svm_3.pdf,isolation_forest_svm,"deep_isolation_forest', 'anomaly_detection', 'svm'"
+siForest: Detecting Network Anomalies with Set-Structured Isolation Forest,data/isolation_forest_svm_4.pdf,isolation_forest_svm,"set-structured_isolation_forest', 'network_anomaly_detection', 'svm'"
+MonArch: Network Slice Monitoring Architecture for Cloud Native 5G Deployments,data/kpi_5g_monitoring_1.pdf,5g_network_monitoring,"5g_network_monitoring', 'network_slicing', '5g_kpi_monitoring'"
+A Comparative and Measurement-Based Study on Real-Time Network KPI Extraction Methods for 5G and Beyond Applications,data/kpi_5g_monitoring_2.pdf,5g_network_monitoring,"5g_kpi_extraction', 'network_monitoring', '5g_kpi_monitoring'"
+AI/ML Life Cycle Management for Interoperable AI Native RAN,data/kpi_5g_monitoring_3.pdf,5g_network_monitoring,"ai', 'ml_lcm', 'ran', '3gpp', '5g_kpi_monitoring'"
+Machine Learning-Driven Anomaly Detection for 5G O-RAN Performance Metrics,data/kpi_5g_monitoring_4.pdf,5g_network_monitoring,"anomaly_detection', 'oran', '5g_kpis', '5g_kpi_monitoring'"
+SAJD: Self-Adaptive Jamming Attack Detection in AI/ML Integrated 5G O-RAN Networks,data/kpi_5g_monitoring_5.pdf,5g_network_monitoring,"jamming_detection', 'oran', 'adaptive_ml', '5g_kpi_monitoring'"
+LLM-Based Net Analyzer rApp for Explainable and Safe Automation in O-RAN Non-RT RIC,data/kpi_5g_monitoring_6.pdf,5g_network_monitoring,"llm_for_network_automation', 'o-ran', '5g_kpi_monitoring'"
+An Influence-based Approach for Root Cause Alarm Discovery in Telecom Networks,data/rca_failure_analysis_1.pdf,fault_detection_rca,"root_cause_analysis', 'alarm_correlation', 'root_cause_analysis'"
+5G Core Fault Detection and Root Cause Analysis using Machine Learning and Generative AI,data/rca_failure_analysis_2.pdf,fault_detection_rca,"fault_detection', 'root_cause_analysis', 'generative_ai', 'root_cause_analysis'"
+TeleDoCTR: Domain-Specific and Contextual Troubleshooting for Telecommunications,data/rca_failure_analysis_3.pdf,fault_detection_rca,"ticket_troubleshooting', 'llm', 'telecom', 'root_cause_analysis'"
+"A Survey on Large Language Models for
+Communication, Network, and Service
+Management: Application Insights, Challenges, and
+Future Directions",data/telecom_llm_1.pdf,llm,"network', 'service_management', 'llm_survey', 'llm'"
+Large Language Models for Next-Generation Wireless Network Management: A Survey and Tutorial,data/telecom_llm_2.pdf,llm,"llm_survey', 'wireless_network_optimization', 'llm'"

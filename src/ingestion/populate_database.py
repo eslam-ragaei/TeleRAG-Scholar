@@ -1,0 +1,68 @@
+import sys
+import os
+
+# Add project root to path
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, project_root)
+from src.embeddings.get_embedding import BGEM3Embeddings
+from src.ingestion.loader import load_documents
+from src.ingestion.chunking import chunk_documents
+from langchain_chroma import Chroma
+import os
+import shutil
+
+DATA_PATH = "data/"
+CHROMA_DB_PATH = "chroma_db"
+
+def clear_database():
+    """
+    Delete existing ChromaDB to avoid duplicate data
+    
+    """
+    if os.path.exists(CHROMA_DB_PATH):
+        shutil.rmtree(CHROMA_DB_PATH)
+        print("Old database cleared.")
+        
+def populate_database():
+    
+    """
+    Create the Vector of embeddings from my data
+    """
+    
+    # Load files into documents
+    documents = load_documents(data_path=DATA_PATH)
+    
+    #Chunk the documents
+    chunks = chunk_documents(documents=documents)
+    
+    #Create embedding instance
+    embedder = BGEM3Embeddings()
+    
+    #Creacte vectorstore database from documents directly
+    db = Chroma.from_documents(
+        documents=chunks,
+        embedding=embedder,
+        persist_directory=CHROMA_DB_PATH
+    )
+    
+    print(f"Database created with {len(chunks)} chunks.")
+
+if __name__ == "__main__":
+    
+    print("Use the UI for interactive usage")
+    
+    # if os.path.exists(CHROMA_DB_PATH):
+        
+    #     answer = input("Do you need to clear the database : (y/n)\nif yes it will be cleared and populate the new one\nyour answer: ").strip().lower()
+        
+    #     if answer in ['yes' , 'y']:
+            
+    #         clear_database()
+    #         populate_database()
+            
+    #     else:
+    #         print("Keep old one.")
+            
+    # else:
+    #     print("No database found")
+    #     populate_database()
