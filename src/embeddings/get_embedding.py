@@ -11,7 +11,7 @@ class BGEM3Embeddings(Embeddings):
     
     def __init__(self , model_name = "bge-m3" , base_url = "http://localhost:11434" , temperature = 0.0):
         """
-        initalize BGE-M3 embedding model from Ollama.
+        initialize BGE-M3 embedding model from Ollama.
         
         Args:
             model_name (str): Name of the Ollama model to use for embeddings.
@@ -41,12 +41,12 @@ class BGEM3Embeddings(Embeddings):
         
         for text in texts:
             
-            reponse = ollama.embeddings (
+            response = ollama.embeddings (
                 model=self.model,
                 prompt=text
             )
             
-            embeddings.append(reponse['embedding'])
+            embeddings.append(response['embedding'])
             
         return embeddings
             
@@ -64,8 +64,8 @@ class BGEM3Embeddings(Embeddings):
         """
         
         
-        reponse = ollama.embeddings (
+        response = ollama.embeddings (
                 model=self.model,
                 prompt=text
             )
-        return reponse['embedding']
+        return response['embedding']

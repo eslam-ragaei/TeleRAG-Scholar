@@ -25,13 +25,13 @@ def get_db(CHROMA_DB_PATH = CHROMA_DB_PATH):
 def search_db(query , k=5):
     
     """
-    Return the query similtaties answers
+    Return the query similarities answers
     
     Args:
         Query (str) : you Question
         
     Returns:
-        results ([(Document, disatnce), (Document, disatnce), ...]) : your similar answer and its l2 distance
+        results ([(Document, distance), (Document, distance), ...]) : your similar answer and its l2 distance
     """
     
     

@@ -38,7 +38,7 @@ def populate_database():
     #Create embedding instance
     embedder = BGEM3Embeddings()
     
-    #Creacte vectorstore database from documents directly
+    #Create vector store database from documents directly
     db = Chroma.from_documents(
         documents=chunks,
         embedding=embedder,
