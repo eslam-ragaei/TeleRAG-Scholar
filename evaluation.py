@@ -1,6 +1,4 @@
-from langchain_chroma import Chroma
-from src.embeddings.get_embedding import BGEM3Embeddings
-
+from src.retrieval.query_data import search_db
 
 """
 Build Evaluation logic to rank every question according to human intervention
@@ -15,18 +13,9 @@ test_questions = [
     "How can LLMs assist in telecom root cause analysis?"
 ]
 
-def get_db(CHROMA_DB_PATH = CHROMA_DB_PATH):
-    embedder = BGEM3Embeddings()
-    db = Chroma(
-        persist_directory=CHROMA_DB_PATH , 
-        embedding_function=embedder
-    )
-    
-    return db
-    
-def evaluate_query(query, k=5):
-    db = get_db()
-    results = db.similarity_search_with_score(query, k=k)
+def evaluate_query(query, k=10):
+    query = query.strip()
+    results = search_db(query=query, k=k)
 
     print("\n" + "="*60)
     print(f"QUERY: {query}")
@@ -35,9 +24,9 @@ def evaluate_query(query, k=5):
     for i, (doc, score) in enumerate(results):
         print(f"\n--- Rank {i+1} ---")
         print(f"Score: {score:.2f}")
-        print(f"Source: {doc.metadata["chunk_id"]} with score: {score}")
+        print(f"Source: {doc.metadata['chunk_id']} with score: {score}")
         print("Content Preview:")
-        print(doc.page_content[:300])  # first 300 chars
+        print(doc.page_content)  # first 300 chars
 
     return results
 

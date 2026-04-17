@@ -1,1 +1,150 @@
- The context does not provide a specific definition for a 5G KPI. However, it mentions that Key Performance Indicators (KPIs) are crucial for assessing network quality and performance in 5G networks. They are used for evaluating network performance, influencing decisions related to handovers, link adaptation, and overall network management. Examples of KPIs include signal-to-interference plus noise ratio (SINR), frequency, synchronization signal block index, modulation and coding scheme, bit-error rate, etc. These KPIs are extracted from devices like CPEs using various methods such as active and passive techniques, data-driven optimization, ML, and AT commands.
+
+--- Rank 1 ---
+Score: 0.35
+Source: Source: data/kpi_5g_monitoring_4.pdf :: Page: 1 :: index: 3 with score: 0.35364383459091187
+Content Preview:
+Fig. 1. O-RAN Architecture [10].
+enables the management of ML services and policies. The
+E2 Service Model (E2SM) has three different categories out
+of which E2SM Key Performance Measurement (KPM) [9]
+is the most relevant E2 service model for anomaly detection
+tasks. KPM focuses on tracking real-time network metrics
+from different network entities, including UEs, and anomaly
+detection identifies deviations from normal behavior in these
+metrics, allowing operators to act before problems escalate into
+service-impacting events. By augmenting anomaly detection to
+the KPM aspect of the E2 service model, operators can achieve
+a smarter and more robust RAN management system.
+We focus on two key areas as part of 5G O-RAN fault
+management: (1) detecting serving cell anomalies that predict
+UE throughput degradation, and (2) identifying neighbor cells
+with suboptimal coverage to prevent handover failures. Our
+approach involves two anomaly detection models, summarized
+in Figure 2:
+1) Serving Cell Anomaly Detection: Detects UEs with
+anomalous serving cell KPIs that result in low through-
+put. These anomalies trigger recovery mechanisms, such
+as handovers.
+****************************************************************************************************
+
+
+
+--- Rank 2 ---
+Score: 0.35
+Source: Source: data/kpi_5g_monitoring_4.pdf :: Page: 3 :: index: 2 with score: 0.3487619161605835
+Content Preview:
+mobility patterns in a 5G Network. Each row contains the
+following information:
+• PRB Used for Downlink (serving cell)
+• Radio Coverage metrics (RSRP, RSSINR, RSRQ) from
+serving and neighbor cells
+• Data Radio Bearer (DRB) UE Throughput Downlink,
+Target (desired) Throughput
+• Other information including DU, Cells, and UE ID, etc.
+We utilized 4 KPIs from the serving cell and 15 KPIs from five
+neighbor cells, resulting in a total of 19 features as input to our
+ML models. We implemented our solution using Python, with
+the following open source libraries being the most crucial:
+• Scikit-learn for Isolation Forest and Random Forest mod-
+els, hyperparameters tuning and permutation importance.
+• PyOD [13], and PyTorch for training AutoEncoder mod-
+els.
+• SHAP for model explanation.
+A. Anomaly Detection Algorithm 1
+Table I provides a summary of key hyperparameters tuned
+during the training phase. Due to space constraints, some
+hyperparameters are not listed. For hyperparameter tuning,
+multiple configurations of each model were evaluated based
+on their F1-scores, calculated using anomaly labels from the
+training data. The model configuration with the highest F1-
+****************************************************************************************************
+
+
+
+--- Rank 3 ---
+Score: 0.37
+Source: Source: data/kpi_5g_monitoring_2.pdf :: Page: 2 :: index: 1 with score: 0.3658272624015808
+Content Preview:
+has a 5G standalone (SA) architecture.
+2) CPE Devices: The device with the name MEIGCEE
+SRT853L Outdoor CPE [12] has been powered by the Qual-
+comm SDX65 chipset [13], which delivers advanced 5G con-
+nectivity with support for both the mmWave and Sub-6 GHz
+spectrum bands. It achieves download speeds of up to 10 Gbps
+and upload speeds up to 3.38 Gbps on mmWave. Equipped
+with internal QTM547 antenna modules, it ensures reliable
+performance and supports SA and NSA network modes.
+Another CPE device is the General Mobile OD-513 [14],
+powered by Qualcomm’s Snapdragon X55 chipset [13], offers
+advanced global 5G connectivity over both mmWave and sub-
+6 GHz bands. It achieves download speeds up to 7 Gbps
+and upload speeds up to 3 Gbps while providing multi-mode
+support across 5G NR, LTE and legacy 3G and 2G networks.
+C. KPI Extraction Methods
+In 5G network KPI measurements, there are two primary
+approaches: active and passive [15]. Active methods involve
+generating traffic or simulating user behavior to evaluate
+network performance without requiring root access to the
+mobile device. These methods are user-friendly and can be
+implemented on standard devices. Passive methods rely on
+****************************************************************************************************
+
+
+
+--- Rank 4 ---
+Score: 0.37
+Source: Source: data/A Comparative and Measurement-Based Study on Real-Time Network KPI Extraction Methods for 5G and Beyond Applications.pdf :: Page: 2 :: index: 1 with score: 0.3658272624015808
+Content Preview:
+has a 5G standalone (SA) architecture.
+2) CPE Devices: The device with the name MEIGCEE
+SRT853L Outdoor CPE [12] has been powered by the Qual-
+comm SDX65 chipset [13], which delivers advanced 5G con-
+nectivity with support for both the mmWave and Sub-6 GHz
+spectrum bands. It achieves download speeds of up to 10 Gbps
+and upload speeds up to 3.38 Gbps on mmWave. Equipped
+with internal QTM547 antenna modules, it ensures reliable
+performance and supports SA and NSA network modes.
+Another CPE device is the General Mobile OD-513 [14],
+powered by Qualcomm’s Snapdragon X55 chipset [13], offers
+advanced global 5G connectivity over both mmWave and sub-
+6 GHz bands. It achieves download speeds up to 7 Gbps
+and upload speeds up to 3 Gbps while providing multi-mode
+support across 5G NR, LTE and legacy 3G and 2G networks.
+C. KPI Extraction Methods
+In 5G network KPI measurements, there are two primary
+approaches: active and passive [15]. Active methods involve
+generating traffic or simulating user behavior to evaluate
+network performance without requiring root access to the
+mobile device. These methods are user-friendly and can be
+implemented on standard devices. Passive methods rely on
+****************************************************************************************************
+
+
+
+--- Rank 5 ---
+Score: 0.29
+Source: Source: data/kpi_5g_monitoring_2.pdf :: Page: 0 :: index: 4 with score: 0.29057443141937256
+Content Preview:
+signal-to-interference plus noise ratio (SINR). These KPIs
+are crucial for assessing network quality and performance,
+influencing decisions related to handovers, link adaptation, and
+overall network management [2]–[6], and they are also integral
+to radio resource management in 5G networks, providing
+information on signal strength and quality [3], [5], [7], [8].
+The extraction and analysis of these KPIs are pivotal for
+optimizing 5G network performance. Advanced techniques,
+such as data-driven optimization and ML, are increasingly
+employed to enhance the accuracy and efficiency of KPI mea-
+surement and interpretation [9], [10]. These methods enable
+network operators to automate the optimization of network
+parameters, thereby improving coverage, quality, and user
+experience [5], [9]. Moreover, integrating AI frameworks for
+KPI monitoring and diagnosis further enhances the ability
+to detect and address network issues proactively [10]. Be-
+sides, the practical method involves using platforms like the
+SIM8200EA-M2 to connect with mobile terminals, enabling
+the collection and analysis of real-time data utilizing the AT
+commands [2]. This approach not only facilitates the validation
+****************************************************************************************************
+
+

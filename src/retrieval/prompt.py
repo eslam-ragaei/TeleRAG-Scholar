@@ -28,6 +28,7 @@ def generate_answer(context, query):
     model = OllamaLLM(
     model="mistral",
     temperature=0.0,
+    
 )
     
     prompt = PROMPT_TEMPLATE.format(

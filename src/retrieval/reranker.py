@@ -9,10 +9,10 @@ class Reranker:
 
         scores = self.model.predict(pairs)
 
-        # Combine docs with new scores
-        reranked = list(zip(docs, scores))
+        # Combine docs with new scores and index for tie-breaking
+        reranked = [(docs[i], scores[i], i) for i in range(len(docs))]
 
-        # Sort by reranker score
-        reranked = sorted(reranked, key=lambda x: x[1], reverse=True)
+        # Sort by reranker score (descending), then by original index (ascending) for deterministic tie-breaking
+        reranked = sorted(reranked, key=lambda x: (-x[1], x[2]))
 
         return [item[0] for item in reranked]

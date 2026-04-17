@@ -10,7 +10,7 @@ from src.embeddings.get_embedding import BgeM3Embeddings
 from src.retrieval.reranker import Reranker
 
 
-CHROMA_DB_PATH = "chroma_db"
+CHROMA_DB_PATH = os.path.join(project_root, "chroma_db")
 
 
 def get_db(CHROMA_DB_PATH = CHROMA_DB_PATH):
@@ -59,11 +59,6 @@ def build_context(results):
     for doc, score in results:
         
         context += doc.page_content + "\n\n"
-        sources.append(f"{doc.metadata["chunk_id"]} with score: {score}")
+        sources.append(f"{doc.metadata['chunk_id']} with score: {score}")
         
     return context ,sources
-
-
-
-    
-    
