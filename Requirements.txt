@@ -1,0 +1,35 @@
+# Core RAG framework
+langchain
+langchain-community
+
+# Embeddings + reranking
+sentence-transformers
+
+# Vector DB
+chromadb
+
+# PDF processing
+pypdf
+unstructured
+
+# API layer
+fastapi
+uvicorn
+
+# UI
+gradio
+
+# ML utilities
+numpy
+scikit-learn
+
+# Optional (logging / evaluation later)
+tqdm
+pandas
+
+# HuggingFace support
+transformers
+torch
+
+# Ollama client (if needed)
+ollama

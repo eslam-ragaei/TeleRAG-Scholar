@@ -4,9 +4,9 @@ import os
 # Add project root to path
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, project_root)
-from src.embeddings.get_embedding import BgeM3Embeddings
-from src.ingestion.loader import load_documents
-from src.ingestion.chunking import chunk_documents
+from Shared.get_embedding import BgeM3Embeddings
+from Services.ingestion.loader import load_documents
+from Services.ingestion.chunking import chunk_documents
 from langchain_chroma import Chroma
 import os
 import shutil

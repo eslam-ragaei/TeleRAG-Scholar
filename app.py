@@ -6,9 +6,9 @@ project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(_
 sys.path.insert(0, project_root)
 
 import gradio as gr
-from src.retrieval.query_data import search_db , build_context
-from src.retrieval.prompt import generate_answer
-from src.ingestion.populate_database import clear_database , populate_database
+from Services.retrieval.query_data import search_db , build_context
+from Services.llm.prompt import generate_answer
+from Services.ingestion.populate_database import clear_database , populate_database
 
 def chat(query):
     if not query.strip():
