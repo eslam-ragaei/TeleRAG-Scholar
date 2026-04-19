@@ -1,9 +1,11 @@
+chroma_db/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
 *$py.class
 
-chroma_db/
+
 
 # C extensions
 *.so
