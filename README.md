@@ -1,299 +1,260 @@
-# 📡 TeleRAG Scholar
+# 📡 TeleRAG Scholar (Microservices RAG System)
 
-### Retrieval-Augmented Generation for Telecom Research Papers
+## 🚀 Overview
 
----
+TeleRAG Scholar is a **production-style microservices Retrieval-Augmented Generation (RAG) system** designed for telecom research papers.
 
-## 🚀 Project Overview
+It enables intelligent question answering over a corpus of telecom papers using:
+- Dense semantic retrieval (BGE-M3)
+- Cross-encoder reranking
+- Large Language Model reasoning (Mistral)
+- Fully modular microservices architecture
 
-**TeleRAG Scholar** is a Retrieval-Augmented Generation (RAG) system designed to answer engineering questions about **telecom anomaly detection, KPI monitoring, and root cause analysis** using real research papers from arXiv.
-
-The system retrieves relevant content from a curated corpus of telecom papers and generates **grounded, explainable answers** using a Large Language Model.
-
----
-
-## 🎯 Objectives
-
-* Build a **complete RAG pipeline**
-* Work with **real-world telecom research papers**
-* Understand how **retrieval quality affects LLM performance**
-* Experiment with **chunking strategies**
-* Deliver a **chat-based interface for querying knowledge**
+The system is designed to evolve from an **MVP RAG system (Level 1)** into an **industry-grade AI knowledge platform (Level 2 & 3 roadmap)**.
 
 ---
 
 ## 🧠 System Architecture
 
-```
-User Query
-   ↓
-Embedding (bge-m3)
-   ↓
-ChromaDB (Vector Store)
-   ↓
-Top-K Retrieval
-   ↓
-Context Injection
-   ↓
-Mistral LLM (Ollama)
-   ↓
-Final Answer + Sources
-```
+### 🔷 RAG system flow
+
+<img src="RAG system.png">
 
 ---
 
-## 🗂️ Project Structure
+### 🔷 Microservices Design
 
-```
-TeleRAG/
-│
-├── data/                     # PDF papers (20+ from arXiv)
-├── chroma_db/               # Persistent vector database
-│
-├── src/
-│   ├── ingestion/
-│   │   ├── loader.py
-│   │   ├── chunking.py
-│   │   ├── populate_database.py
-│
-│   ├── embeddings/
-│   │   ├── get_embedding_function.py
-│
-│   ├── retrieval/
-│   │   ├── query_data.py
-│   │   ├── prompt.py
-│
-├── app.py                   # Gradio UI
-├── papers_catalog.csv       # Metadata
-├── requirements.txt
-└── README.md
-```
+#### System Architecture Diagram
+
+<img src="Microservices Design.png">
 
 ---
 
-## 📚 Dataset
+## ⚙️ Core Services
 
-* Source: **arXiv.org**
-* Total Papers: **20+**
-* Topics:
-
-  * Anomaly Detection in Telecom
-  * Isolation Forest / One-Class SVM
-  * 5G KPI Monitoring
-  * Root Cause Analysis
-  * LLMs in Telecom
-
-Each paper is stored as a PDF and tracked in:
-
-```
-papers_catalog.csv
-```
-
-Example:
-
-```
-Title | Topic | Path
------------------------------------------
-LogAnMeta | ['anomaly_detection'] | data/anomaly_detection_1.pdf
-```
+### 🟢 API Gateway
+- Entry point of the system
+- Routes requests between services
+- Aggregates final response
+- Returns answer + sources
 
 ---
 
-## ⚙️ Installation
+### 🟢 Ingestion Service
+Responsible for building the knowledge base:
 
-### 1️⃣ Clone the repository
-
-```
-git clone <your-repo-link>
-cd TeleRAG
-```
+- Loads PDF documents
+- Extracts raw text
+- Splits into semantic chunks
+- Generates embeddings using **BGE-M3**
+- Stores chunks + embeddings into **ChromaDB**
 
 ---
 
-### 2️⃣ Install dependencies
+### 🟢 Retrieval Service
+Core search engine of the system:
 
-```
+- Converts query into embeddings (BGE-M3)
+- Performs vector similarity search in ChromaDB
+- Retrieves top-K candidate chunks
+- Applies **Cross-Encoder reranking**
+- Returns most relevant context
+
+---
+
+### 🟢 LLM Service
+Reasoning and answer generation:
+
+- Uses **Mistral LLM (Ollama / HF)**
+- Receives retrieved context
+- Generates grounded response
+- Ensures answers are based only on provided context
+
+---
+
+### 🟢 Vector Database (ChromaDB)
+- Stores embeddings and metadata
+- Persistent storage via Kubernetes PVC
+- Enables fast semantic search
+
+---
+
+## 📁 Project Structure
+
+### Directory Structure
+
+- **services/**
+  - **api-gateway/**
+    - `main.py`
+  - **ingestion-service/**
+    - `app.py`
+    - `loader.py`
+    - `chunker.py`
+    - `embedder.py`
+  - **retrieval-service/**
+    - `app.py`
+    - `retriever.py`
+    - `reranker.py`
+  - **llm-service/**
+    - `app.py`
+    - `client.py`
+
+- **shared/**
+  - `embeddings.py`
+  - `config.py`
+
+- **data/** _# local development only_
+- **chroma_db/** _# persistent volume (K8s)_
+
+- **docker/**
+  - `Dockerfile.api`
+  - `Dockerfile.ingestion`
+  - `Dockerfile.retrieval`
+  - `Dockerfile.llm`
+
+- **k8s/**
+  - `api-deployment.yaml`
+  - `ingestion-deployment.yaml`
+  - `retrieval-deployment.yaml`
+  - `llm-deployment.yaml`
+  - `chroma-pvc.yaml`
+  - `services.yaml`
+
+- Root files:
+  - [`docker-compose.yml`](docker-compose.yml)
+  - [`requirements.txt`](requirements.txt)
+  - [`README.md`](README.md)
+
+---
+
+## 🧠 Data Flow
+
+### 🔷 Query Flow
+#### Workflow Diagram
+
+- **User Question**
+- **API Gateway**
+- **Retrieval Service**
+- **BGE-M3 Embedding**
+- **ChromaDB Vector Search**
+- **Cross-Encoder Reranker**
+- **Top-K Context**
+- **LLM Service (Mistral)**
+- **Final Answer + Sources**
+
+---
+
+### 🔷 Ingestion Flow
+
+#### PDF Documents Workflow
+
+1. **PDF Documents**
+2. **Ingestion Service**
+3. **Text Extraction**
+4. **Chunking Strategy**
+5. **BGE-M3 Embeddings**
+6. **ChromaDB Storage**
+
+---
+
+## 📦 Model Strategy (Kubernetes Design)
+
+### 🟢 BGE-M3 (Embedding Model)
+- Loaded from HuggingFace (`BAAI/bge-m3`)
+- Cached inside container runtime
+- Stateless per pod
+
+---
+
+### 🟢 Mistral (LLM Model)
+- Runs via Ollama service
+- Stored in Kubernetes Persistent Volume (PVC)
+- Reused across pod restarts
+
+---
+
+## ⚙️ Installation (Local Development)
+
+```bash
+git clone <repo>
+cd telerag-scholar
 pip install -r requirements.txt
 ```
 
----
+### Run with Docker
 
-### 3️⃣ Install Ollama models
-
-```
-ollama pull bge-m3
-ollama pull mistral
+```bash
+docker compose up --build
 ```
 
----
+### Deploy with Kubernetes
 
-## 🔄 Pipeline Implementation
-
----
-
-### 🔹 1. Document Loading
-
-* Uses `PyPDFDirectoryLoader`
-* Loads all PDFs from `/data/`
-
----
-
-### 🔹 2. Chunking
-
-* `RecursiveCharacterTextSplitter`
-* Default:
-
-  * `chunk_size = 1200`
-  * `chunk_overlap = 200`
-
-Each chunk is assigned a unique ID:
-
-```
-source:page:index
+```bash
+kubectl apply -f k8s/
 ```
 
 ---
 
-### 🔹 3. Embeddings
+## 🧪 Current System (MVP - Level 1)
 
-* Model: **bge-m3 (via Ollama)**
-* Custom embedding class:
+This system currently supports:
 
-  * `embed_documents()` → for chunks
-  * `embed_query()` → for user questions
-
----
-
-### 🔹 4. Vector Store (ChromaDB)
-
-* Stores:
-
-  * embeddings
-  * metadata
-  * chunk IDs
-* Persistent storage in `/chroma_db`
+- Dense retrieval using BGE-M3
+- Cross-encoder reranking
+- Context-based LLM answering (Mistral)
+- ChromaDB vector storage
+- Basic evaluation of retrieval quality
 
 ---
 
-### 🔹 5. Query Pipeline
+## 📊 Evaluation Strategy
 
-1. Embed user query
-2. Retrieve **Top-5 similar chunks**
-3. Build context
-4. Send to **Mistral LLM**
-5. Generate answer
-
----
-
-### 🔹 6. Prompt Strategy
-
-```
-Answer ONLY from the provided context.
-If not found, say "I don't know".
-```
+- Hit Rate (retrieval success)
+- Precision@K
+- Chunk relevance score
+- Answer grounding correctness
 
 ---
 
-## 💬 Gradio Interface
+## 🚧 Roadmap
 
-Run:
+### 🟢 Level 1 (Completed MVP)
+- Dense retrieval
+- Reranking
+- LLM-based generation
+- Basic RAG pipeline
 
-```
-python app.py
-```
+### 🟡 Level 2 (Next Upgrade)
+- Query rewriting module
+- Metadata-based filtering
+- Automatic evaluation pipeline
+- Logging and monitoring system
+- Citation grounding improvements
 
-Features:
-
-* Ask telecom-related questions
-* View generated answer
-* View top-3 retrieved sources (with scores)
-
----
-
-## 🧪 Chunk Size Experiment
-
-We evaluated three chunk sizes:
-
-| Chunk Size | Overlap | Observation                  |
-| ---------- | ------- | ---------------------------- |
-| 400        | 80      | Too small, loses context     |
-| 1200       | 200     | Balanced (best performance)  |
-| 2000       | 300     | Too large, reduces precision |
-
-### ✅ Conclusion:
-
-Chunk size **1200** provides the best balance between:
-
-* Context completeness
-* Retrieval precision
+### 🔴 Level 3 (Advanced System)
+- Hybrid retrieval (BM25 + dense)
+- Multi-stage ranking pipeline
+- Feedback learning loop
+- A/B testing system
+- Large-scale production RAG architecture
 
 ---
 
-<!-- ## 📊 Retrieval Evaluation (Summary)
-
-We evaluated the system using:
-
-* **Hit Rate**
-* **Precision (relevant chunks in Top-K)**
-* **Ranking Quality**
-
-| Query | Hit | Precision | Notes             |
-| ----- | --- | --------- | ----------------- |
-| Q1    | Yes | 3/5       | Good              |
-| Q2    | Yes | 4/5       | Very good         |
-| Q3    | Yes | 2/5       | Needs improvement |
-| Q4    | Yes | 3/5       | Acceptable        |
-| Q5    | Yes | 3/5       | Good              | -->
-
-<!-- --- -->
-
-## ✅ Example Questions
-
-The system successfully answers:
-
-* What statistical methods are used in 5G anomaly detection?
-* How does Isolation Forest work?
-* What causes RRC connection failures?
-* What metrics evaluate anomaly detection?
-* How can LLMs assist in telecom RCA?
+## 🧠 Key Insight
+This project is designed as a distributed AI knowledge system, not a simple script.
+It separates:
+- Retrieval (search intelligence)
+- Ranking (relevance intelligence)
+- Generation (language intelligence)
 
 ---
 
-## 🔥 Key Learnings
-
-* Retrieval quality is more important than LLM size
-* Chunk size significantly affects performance
-* Metadata and chunking improve interpretability
-* RAG systems reduce hallucination by grounding answers
-
----
-
-## 🚧 Future Improvements
-
-* Query routing by topic (multi-folder retrieval)
-* Hybrid search (BM25 + embeddings)
-* Reranking models
-* Deployment with Docker
-
-
----
-
-## 📌 Notes
-
-* All papers are open-access from arXiv
-* No external API required (fully local with Ollama)
-
----
-
-## ⭐ Final Remark
-
-This project demonstrates a **complete end-to-end RAG system**, combining:
-
-* Information Retrieval
-* Embedding Models
-* Vector Databases
-* Large Language Models
-
-into a real-world telecom knowledge assistant.
-
----
+## ⭐ Final Note
+TeleRAG Scholar demonstrates a complete end-to-end RAG system architecture, combining:
+- Information Retrieval
+- Embedding Models
+- Vector Databases
+- Re-ranking Models
+- Large Language Models
+- Microservices Design
+- Kubernetes Deployment
