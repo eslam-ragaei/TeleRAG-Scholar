@@ -1,71 +1,19 @@
-import ollama
+import torch
+import numpy as np
+from sentence_transformers import SentenceTransformer
 from langchain.embeddings.base import Embeddings
 
-class BGEM3Embeddings(Embeddings):
-    
-    """
-    Custom embedding class using Ollama bge-m3 model.
-    Compatible with LangChain and ChromaDB.
-    
-    """
-    
-    def __init__(self , model_name = "bge-m3" , base_url = "http://localhost:11434" , temperature = 0.0):
-        """
-        initalize BGE-M3 embedding model from Ollama.
-        
-        Args:
-            model_name (str): Name of the Ollama model to use for embeddings.
-            base_url (str): Base URL for the Ollama API.
-            temperature (float): Temperature setting for the embedding model.
-        
-        """
-        
-        self.model = model_name
-        self.base_url = base_url
-        self.temperature = temperature
-        
-    def embed_documents (self , texts):
-        
-        """
-        Embed a list of documents.
-        
-        Args:
-            texts (List[str]): List of chunk texts to embed.
-            
-        Returns:
-            List[List[float]]: List of embedding vectors for each chunk.            
-        
-        """
-        
-        embeddings = []
-        
-        for text in texts:
-            
-            reponse = ollama.embeddings (
-                model=self.model,
-                prompt=text
-            )
-            
-            embeddings.append(reponse['embedding'])
-            
-        return embeddings
-            
+
+class BgeM3Embeddings(Embeddings):
+    def __init__(self):
+        # Set seeds for deterministic behavior
+        torch.manual_seed(42)
+        np.random.seed(42)
+        self.model = SentenceTransformer("BAAI/bge-m3")
+        self.model.eval()  # Set to eval mode for consistency
+
+    def embed_documents(self, texts):
+        return self.model.encode(texts, normalize_embeddings=True, show_progress_bar=False).tolist()
+
     def embed_query(self, text):
-        
-        """
-        Embed the question query
-        
-        Args:
-        Question (str): The question query to embed.
-        
-        Returns:
-        List[float]: Embedding vector for the question query.
-        
-        """
-        
-        
-        reponse = ollama.embeddings (
-                model=self.model,
-                prompt=text
-            )
-        return reponse['embedding']
+        return self.model.encode(text, normalize_embeddings=True, show_progress_bar=False).tolist()

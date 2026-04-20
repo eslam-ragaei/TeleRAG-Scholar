@@ -6,37 +6,48 @@ project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(_
 sys.path.insert(0, project_root)
 
 from langchain_chroma import Chroma
-from src.embeddings.get_embedding import BGEM3Embeddings
-from langchain_ollama import OllamaLLM
+from src.embeddings.get_embedding import BgeM3Embeddings
+from src.retrieval.reranker import Reranker
 
 
-CHROMA_DB_PATH = "chroma_db"
+CHROMA_DB_PATH = os.path.join(project_root, "chroma_db")
 
 
 def get_db(CHROMA_DB_PATH = CHROMA_DB_PATH):
-    embedder = BGEM3Embeddings()
+    embedder = BgeM3Embeddings()
     db = Chroma(
         persist_directory=CHROMA_DB_PATH , 
-        embedding_function=embedder
+        embedding_function=embedder,
+        collection_metadata={"hnsw:space": "cosine"} 
     )
     
     return db
 
-def search_db(query , k=5):
+def search_db(query , k=10):
     
     """
-    Return the query similtaties answers
+    Return the query similarities answers
     
     Args:
         Query (str) : you Question
         
     Returns:
-        results ([(Document, disatnce), (Document, disatnce), ...]) : your similar answer and its l2 distance
+        results ([(Document, distance), (Document, distance), ...]) : your similar answer and its l2 distance
     """
     
     
     db = get_db()
-    results = db.similarity_search_with_score(query=query , k=k)
+    
+    reranker = Reranker()
+
+# Step 1: retrieve more candidates
+    results = db.similarity_search_with_score(query, k=k)
+
+    # Step 2: rerank
+    reranked_docs = reranker.rerank(query, results)
+
+    # Step 3: take top 5
+    results = reranked_docs[:5]
     
     return results
 
@@ -48,11 +59,6 @@ def build_context(results):
     for doc, score in results:
         
         context += doc.page_content + "\n\n"
-        sources.append(f"{doc.metadata["chunk_id"]} with score: {score}")
+        sources.append(f"{doc.metadata['chunk_id']} with score: {score}")
         
     return context ,sources
-
-
-
-    
-    

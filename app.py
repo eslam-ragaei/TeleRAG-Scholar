@@ -18,7 +18,15 @@ def chat(query):
         search_results = search_db(query=query)
         context, source = build_context(search_results)
         answer = generate_answer(context=context, query=query)
-
+        with open("output.txt", "w") as file:
+            for i, (doc, score) in enumerate(search_results):
+                file.write(f"\n--- Rank {i+1} ---\n")
+                file.write(f"Score: {score:.2f}\n")
+                file.write(f"Source: {doc.metadata['chunk_id']} with score: {score}\n")
+                file.write("Content Preview:\n")
+                file.write(doc.page_content + "\n")
+                file.write("*"*100)
+                file.write("\n\n\n")
         sources = "\n\n".join(source) if source else "No sources found."
         return answer, sources
 

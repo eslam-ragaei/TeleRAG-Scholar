@@ -8,19 +8,17 @@ sys.path.insert(0, project_root)
 from langchain_ollama import OllamaLLM
 # from query_data import search_db , build_context
 
-PROMOT_TEMPLATE = """
+PROMPT_TEMPLATE = """
+Answer ONLY using the context below.
+If the answer is not explicitly in the context, say "I don't know".
 
-Answer the question based only on the following context:
-
+Context:
 {context}
 
----
+Question:
+{question}
 
-Question: {question}
-
-Answer (if the answer is not in the context, say "I don't have enough information to answer this question"):
-
-
+Answer:
 """
 
 # generate the llm input to generate the answer
@@ -30,16 +28,17 @@ def generate_answer(context, query):
     model = OllamaLLM(
     model="mistral",
     temperature=0.0,
+    
 )
     
-    promot = PROMOT_TEMPLATE.format(
+    prompt = PROMPT_TEMPLATE.format(
         context=context,
         question=query
     )
 
-    respose = model.invoke(promot)
+    response = model.invoke(prompt)
     
-    return respose
+    return response
 
 
 if __name__ == "__main__":

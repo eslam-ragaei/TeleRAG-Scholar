@@ -1,4 +1,4 @@
-# 📡 TeleRAG Scholar
+# 📡 Telecom RAG Chat System
 
 ### Retrieval-Augmented Generation for Telecom Research Papers
 
@@ -6,66 +6,60 @@
 
 ## 🚀 Project Overview
 
-**TeleRAG Scholar** is a Retrieval-Augmented Generation (RAG) system designed to answer engineering questions about **telecom anomaly detection, KPI monitoring, and root cause analysis** using real research papers from arXiv.
+This repository implements a **telecom-focused RAG chat system** that answers questions from a corpus of research papers using a vector search pipeline and a local LLM.
 
-The system retrieves relevant content from a curated corpus of telecom papers and generates **grounded, explainable answers** using a Large Language Model.
+The latest version includes:
 
----
-
-## 🎯 Objectives
-
-* Build a **complete RAG pipeline**
-* Work with **real-world telecom research papers**
-* Understand how **retrieval quality affects LLM performance**
-* Experiment with **chunking strategies**
-* Deliver a **chat-based interface for querying knowledge**
+* A **Gradio-based chat UI** in `app.py`
+* **Database management buttons** for clearing and populating the vector store
+* **Reranking** of retrieval candidates using `BAAI/bge-reranker-base`
+* **Output logging** of retrieved chunks into `output.txt`
+* Improved pipeline transparency for sources and retrieval metadata
 
 ---
 
-## 🧠 System Architecture
+## 📌 First release: what to know
 
-```
-User Query
-   ↓
-Embedding (bge-m3)
-   ↓
-ChromaDB (Vector Store)
-   ↓
-Top-K Retrieval
-   ↓
-Context Injection
-   ↓
-Mistral LLM (Ollama)
-   ↓
-Final Answer + Sources
-```
+This is the first release of the Telecom RAG Chat System. The current implementation includes:
+
+* `app.py` — a **Gradio chat interface** with:
+  * query input box
+  * generated answer output
+  * retrieved source context output
+  * buttons to **clear** and **populate** the ChromaDB
+* `src/ingestion/populate_database.py` — builds and persists the Chroma vector database
+* `src/ingestion/loader.py` — loads PDF pages from `data/`
+* `src/ingestion/chunking.py` — splits documents into embedding-friendly chunks
+* `src/embeddings/get_embedding.py` — embeddings with **BAAI/bge-m3**
+* `src/retrieval/query_data.py` — performs similarity search and reranking
+* `src/retrieval/reranker.py` — reranks results using `BAAI/bge-reranker-base`
+* `src/retrieval/prompt.py` — constructs prompts and invokes **Mistral** via Ollama
+* `output.txt` — logs retrieved chunk previews and scores for each query
+
+This release also includes a two-stage retrieval flow: similarity search in ChromaDB followed by reranking with a CrossEncoder.
 
 ---
 
-## 🗂️ Project Structure
+## 📂 Project Structure
 
 ```
-TeleRAG/
-│
-├── data/                     # PDF papers (20+ from arXiv)
-├── chroma_db/               # Persistent vector database
-│
+Analytics_Project/
+├── app.py
+├── papers_catalog.csv
+├── output.txt
+├── chroma_db/                # persistent Chroma vector store
+├── data/                     # PDF source documents
 ├── src/
+│   ├── embeddings/
+│   │   └── get_embedding.py
 │   ├── ingestion/
 │   │   ├── loader.py
 │   │   ├── chunking.py
-│   │   ├── populate_database.py
-│
-│   ├── embeddings/
-│   │   ├── get_embedding_function.py
-│
-│   ├── retrieval/
-│   │   ├── query_data.py
-│   │   ├── prompt.py
-│
-├── app.py                   # Gradio UI
-├── papers_catalog.csv       # Metadata
-├── requirements.txt
+│   │   └── populate_database.py
+│   └── retrieval/
+│       ├── prompt.py
+│       ├── query_data.py
+│       └── reranker.py
 └── README.md
 ```
 
@@ -73,29 +67,9 @@ TeleRAG/
 
 ## 📚 Dataset
 
-* Source: **arXiv.org**
-* Total Papers: **20+**
-* Topics:
-
-  * Anomaly Detection in Telecom
-  * Isolation Forest / One-Class SVM
-  * 5G KPI Monitoring
-  * Root Cause Analysis
-  * LLMs in Telecom
-
-Each paper is stored as a PDF and tracked in:
-
-```
-papers_catalog.csv
-```
-
-Example:
-
-```
-Title | Topic | Path
------------------------------------------
-LogAnMeta | ['anomaly_detection'] | data/anomaly_detection_1.pdf
-```
+* Source: **arXiv telecom papers**
+* Stored as PDFs under `data/`
+* Metadata is tracked in `papers_catalog.csv`
 
 ---
 
@@ -103,197 +77,119 @@ LogAnMeta | ['anomaly_detection'] | data/anomaly_detection_1.pdf
 
 ### 1️⃣ Clone the repository
 
-```
+```bash
 git clone <your-repo-link>
-cd TeleRAG
+cd Analytics_Project
 ```
-
----
 
 ### 2️⃣ Install dependencies
 
-```
+```bash
 pip install -r requirements.txt
 ```
 
----
-
 ### 3️⃣ Install Ollama models
 
-```
-ollama pull bge-m3
+```bash
 ollama pull mistral
 ```
 
----
-
-## 🔄 Pipeline Implementation
+> If you are using an Ollama environment, ensure Ollama is installed and running.
 
 ---
 
-### 🔹 1. Document Loading
+## 🏗️ How the system works
 
-* Uses `PyPDFDirectoryLoader`
-* Loads all PDFs from `/data/`
+1. `src/ingestion/loader.py` loads PDF pages from `data/`
+2. `src/ingestion/chunking.py` splits pages into chunks
+3. `src/embeddings/get_embedding.py` embeds chunks with **BAAI/bge-m3**
+4. `src/ingestion/populate_database.py` persists vectors into `chroma_db/`
+5. `src/retrieval/query_data.py` retrieves similar chunks and reranks them
+6. `src/retrieval/prompt.py` sends the assembled context to **Mistral** via Ollama
 
 ---
 
-### 🔹 2. Chunking
+## 💻 Usage
 
-* `RecursiveCharacterTextSplitter`
-* Default:
+### Populate the database
 
-  * `chunk_size = 1200`
-  * `chunk_overlap = 200`
+You can populate the vector database from the command line:
 
-Each chunk is assigned a unique ID:
-
-```
-source:page:index
+```bash
+python src/ingestion/populate_database.py
 ```
 
----
+Or use the Gradio UI button:
 
-### 🔹 3. Embeddings
+1. Start the app
+2. Click **📥 Populate DB**
 
-* Model: **bge-m3 (via Ollama)**
-* Custom embedding class:
+### Launch the app
 
-  * `embed_documents()` → for chunks
-  * `embed_query()` → for user questions
-
----
-
-### 🔹 4. Vector Store (ChromaDB)
-
-* Stores:
-
-  * embeddings
-  * metadata
-  * chunk IDs
-* Persistent storage in `/chroma_db`
-
----
-
-### 🔹 5. Query Pipeline
-
-1. Embed user query
-2. Retrieve **Top-5 similar chunks**
-3. Build context
-4. Send to **Mistral LLM**
-5. Generate answer
-
----
-
-### 🔹 6. Prompt Strategy
-
-```
-Answer ONLY from the provided context.
-If not found, say "I don't know".
-```
-
----
-
-## 💬 Gradio Interface
-
-Run:
-
-```
+```bash
 python app.py
 ```
 
-Features:
+Then open the local Gradio URL shown in the terminal.
 
-* Ask telecom-related questions
-* View generated answer
-* View top-3 retrieved sources (with scores)
+### Ask a question
 
----
-
-## 🧪 Chunk Size Experiment
-
-We evaluated three chunk sizes:
-
-| Chunk Size | Overlap | Observation                  |
-| ---------- | ------- | ---------------------------- |
-| 400        | 80      | Too small, loses context     |
-| 1200       | 200     | Balanced (best performance)  |
-| 2000       | 300     | Too large, reduces precision |
-
-### ✅ Conclusion:
-
-Chunk size **1200** provides the best balance between:
-
-* Context completeness
-* Retrieval precision
+* Enter your telecom question in the query box
+* Click **🔍 Ask**
+* Review the generated answer
+* Review the source chunks shown below
 
 ---
 
-<!-- ## 📊 Retrieval Evaluation (Summary)
+## 🧩 What the app provides
 
-We evaluated the system using:
-
-* **Hit Rate**
-* **Precision (relevant chunks in Top-K)**
-* **Ranking Quality**
-
-| Query | Hit | Precision | Notes             |
-| ----- | --- | --------- | ----------------- |
-| Q1    | Yes | 3/5       | Good              |
-| Q2    | Yes | 4/5       | Very good         |
-| Q3    | Yes | 2/5       | Needs improvement |
-| Q4    | Yes | 3/5       | Acceptable        |
-| Q5    | Yes | 3/5       | Good              | -->
-
-<!-- --- -->
-
-## ✅ Example Questions
-
-The system successfully answers:
-
-* What statistical methods are used in 5G anomaly detection?
-* How does Isolation Forest work?
-* What causes RRC connection failures?
-* What metrics evaluate anomaly detection?
-* How can LLMs assist in telecom RCA?
+* **Answer output** generated by Mistral using retrieved context
+* **Retrieved context source list** from top reranked chunks
+* **Database controls** to clear and rebuild the vector store
+* **Automatic query logging** in `output.txt`
 
 ---
 
-## 🔥 Key Learnings
+## 📝 Notes on implementation
 
-* Retrieval quality is more important than LLM size
-* Chunk size significantly affects performance
-* Metadata and chunking improve interpretability
-* RAG systems reduce hallucination by grounding answers
+* RAG uses **Top-5** reranked chunks for answer generation
+* Prompt enforces grounded answers:
 
----
-
-## 🚧 Future Improvements
-
-* Query routing by topic (multi-folder retrieval)
-* Hybrid search (BM25 + embeddings)
-* Reranking models
-* Deployment with Docker
-
+```text
+Answer ONLY using the context below.
+If the answer is not explicitly in the context, say "I don't know".
+```
+* `output.txt` stores retrieved chunk previews and scores for each query
 
 ---
 
-## 📌 Notes
+## 🧪 Chunk size evaluation
 
-* All papers are open-access from arXiv
-* No external API required (fully local with Ollama)
+| Chunk size | Chunk overlap | Expected behavior | What to observe |
+|-----------:|--------------:|------------------|-----------------|
+| 400        | 80            | Very small chunks with limited context | Chunks may be too short to carry full answers; retrieval can become noisy and incomplete |
+| 1200       | 200           | Balanced chunk length with semantic coherence | Best baseline: enough context for meaning while remaining focused for precision |
+| 2000       | 300           | Large chunks with broad context | Larger context may include more answer text, but precision can drop as chunks contain unrelated material |
+
+In practice, the baseline setting (`1200`, `200`) is usually the best choice because it preserves enough meaning for retrieval while keeping chunks focused enough for accurate ranking. Smaller chunks often lose coherence, and larger chunks can hurt precision by pulling in excess irrelevant content.
 
 ---
 
-## ⭐ Final Remark
+## 🚀 Recommended workflow
 
-This project demonstrates a **complete end-to-end RAG system**, combining:
+1. Install dependencies
+2. Pull Ollama models
+3. Populate the database once
+4. Run `python app.py`
+5. Ask telecom questions and inspect source chunks
 
-* Information Retrieval
-* Embedding Models
-* Vector Databases
-* Large Language Models
+---
 
-into a real-world telecom knowledge assistant.
+## ✅ Example queries
+
+* What methods are used for 5G anomaly detection?
+* How does Isolation Forest help detect telecom faults?
+* What metrics are used for KPI monitoring?
+* How can root cause analysis be automated?
 
 ---
