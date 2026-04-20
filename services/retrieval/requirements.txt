@@ -1,0 +1,8 @@
+chromadb
+langchain
+requests
+numpy
+fastapi
+uvicorn
+requests
+langchain_chroma

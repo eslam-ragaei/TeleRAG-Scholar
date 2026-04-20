@@ -1,0 +1,10 @@
+FROM python:3.10
+
+WORKDIR /app
+
+COPY services/UI/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY services/UI /app/services/ui
+
+CMD ["python", "services/ui/app.py"]

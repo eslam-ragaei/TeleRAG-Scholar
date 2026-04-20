@@ -1,0 +1,95 @@
+version: "3.9"
+
+services:
+
+  # -------------------------
+  # UI SERVICE
+  # -------------------------
+  ui:
+    build:
+      context: .
+      dockerfile: services/UI/dockerfile.ui
+    ports:
+      - "7860:7860"
+    depends_on:
+      - api-gateway
+    networks:
+      - frontend-net
+
+
+  # -------------------------
+  # API GATEWAY
+  # -------------------------
+  api-gateway:
+    build:
+      context: .
+      dockerfile: services/api/dockerfile.api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - retrieval-service
+      - llm-service
+    networks:
+      - frontend-net
+      - backend-net
+
+
+  # -------------------------
+  # RETRIEVAL SERVICE
+  # -------------------------
+  retrieval-service:
+    build:
+      context: .
+      dockerfile: services/retrieval/dockerfile.retrieval
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./chroma_db:/app/chroma_db
+    networks:
+      - backend-net
+    environment:
+      - MODEL_SERVER=http://host.docker.internal:9000
+
+  # -------------------------
+  # LLM SERVICE
+  # -------------------------
+  llm-service:
+    build:
+      context: .
+      dockerfile: ./services/llm/dockerfile.llm
+    ports:
+      - "8002:8002"
+    networks:
+      - backend-net
+    environment:
+      - OLLAMA_URL=http://host.docker.internal:11434
+
+
+  # -------------------------
+  # OLLAMA (MODELS)
+  # -------------------------
+  # ollama:
+  #   image: ollama/ollama
+  #   container_name: ollama
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ollama_models:/root/.ollama
+  #   networks:
+  #     - backend-net
+
+
+# -------------------------
+# VOLUMES
+# -------------------------
+volumes:
+  chroma_data:
+  # ollama_models:
+
+
+# -------------------------
+# NETWORKS
+# -------------------------
+networks:
+  frontend-net:
+  backend-net:
