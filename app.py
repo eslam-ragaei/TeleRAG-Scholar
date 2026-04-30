@@ -18,7 +18,7 @@ def chat(query):
         search_results = search_db(query=query)
         context, source = build_context(search_results)
         answer = generate_answer(context=context, query=query)
-        with open("output.txt", "w") as file:
+        with open("_output.txt", "w") as file:
             for i, (doc, score) in enumerate(search_results):
                 file.write(f"\n--- Rank {i+1} ---\n")
                 file.write(f"Score: {score:.2f}\n")

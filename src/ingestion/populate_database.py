@@ -10,6 +10,8 @@ from src.ingestion.chunking import chunk_documents
 from langchain_chroma import Chroma
 import os
 import shutil
+from tqdm import tqdm
+
 
 DATA_PATH = "data/"
 CHROMA_DB_PATH = "chroma_db"
@@ -39,12 +41,18 @@ def populate_database():
     embedder = BgeM3Embeddings()
     
     #Create vector store database from documents directly
-    db = Chroma.from_documents(
-        documents=chunks,
-        embedding=embedder,
+    db = Chroma(
         persist_directory=CHROMA_DB_PATH,
-        collection_metadata={"hnsw:space": "cosine"} 
+        embedding_function=embedder,
+        collection_metadata={"hnsw:space": "cosine"}
     )
+    
+    batch_size = 64
+
+    for i in tqdm(range(0, len(chunks), batch_size)):
+        batch = chunks[i:i+batch_size]
+        db.add_documents(batch)
+
     
     print(f"Database created with {len(chunks)} chunks.")
 

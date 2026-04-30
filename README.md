@@ -3,7 +3,11 @@
 ### Retrieval-Augmented Generation for Telecom Research Papers
 
 ---
+## RAG system FLow Chart
 
+<img src="RAG-FlowChart.png">
+
+---
 ## 🚀 Project Overview
 
 This repository implements a **telecom-focused RAG chat system** that answers questions from a corpus of research papers using a vector search pipeline and a local LLM.
