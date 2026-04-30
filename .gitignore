@@ -208,3 +208,6 @@ __marimo__/
 
 
 .gradio
+
+config
+_output.txt

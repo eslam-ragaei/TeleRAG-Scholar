@@ -8,3 +8,5 @@ sentence-transformers
 torch
 numpy
 chromadb
+pypdf
+tqdm
