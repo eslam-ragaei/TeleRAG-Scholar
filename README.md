@@ -189,11 +189,8 @@ In practice, the baseline setting (`1200`, `200`) is usually the best choice bec
 
 ---
 
-## ✅ Example queries
+## ✅ Example queries and answers
 
-* What methods are used for 5G anomaly detection?
-* How does Isolation Forest help detect telecom faults?
-* What metrics are used for KPI monitoring?
-* How can root cause analysis be automated?
+<img src="Q&A.png">
 
 ---
