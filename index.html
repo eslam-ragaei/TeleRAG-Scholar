@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Telecom AI Project</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --primary: #00f7ff;
+    --bg-dark: #02040a;
+    --text: #e6f1ff;
+    --muted: #8aa0c6;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: radial-gradient(circle at top, #0b0f1a, var(--bg-dark));
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* GRID BACKGROUND */
+body::before {
+    content: "";
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background:
+        linear-gradient(rgba(0,247,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,247,255,0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -1;
+}
+
+/* HEADER */
+header {
+    text-align: center;
+    padding: 80px 20px 40px;
+}
+
+.title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    color: var(--primary);
+    letter-spacing: 2px;
+}
+
+.subtitle {
+    color: var(--muted);
+    margin-top: 10px;
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+}
+
+/* MAIN CONTAINER */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* GRID LAYOUT */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* CARD */
+.card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(0, 247, 255, 0.15);
+    border-radius: 16px;
+    padding: 25px;
+    backdrop-filter: blur(10px);
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 25px rgba(0, 247, 255, 0.25);
+    transform: translateY(-5px);
+}
+
+h2 {
+    color: var(--primary);
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+p {
+    color: #cdd9ff;
+    line-height: 1.6;
+}
+
+ul {
+    list-style: none;
+}
+
+li {
+    margin-bottom: 10px;
+    color: #cdd9ff;
+}
+
+/* LINKS */
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+a:hover {
+    color: white;
+    text-shadow: 0 0 6px var(--primary);
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #6c7a96;
+    font-size: 0.9rem;
+    margin-top: auto;
+}
+
+/* ===================== */
+/* 📱 RESPONSIVE DESIGN */
+/* ===================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    header {
+        padding: 50px 15px 20px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="title">Telecom AI RAG System</div>
+    <div class="subtitle">Intelligent Network Analysis & Automation Platform</div>
+</header>
+
+<div class="container">
+    <div class="grid">
+
+        <div class="card">
+            <h2>📌 Project Overview</h2>
+            <p>
+                AI-powered telecom analysis system using Retrieval-Augmented Generation (RAG)
+                to detect anomalies, analyze KPIs, and provide automated root cause insights.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>👥 Team Members</h2>
+            <ul>
+                <li>Eng. Eslam Mohamed</li>
+                <li>Eng. Mahmoud Elsayed</li>
+                <li>Eng. Ahmed youssef</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>🔗 Links</h2>
+            <ul>
+                <li><a href="https://github.com/eslam-ragaei/TeleRAG-Scholar/tree/main">GitHub Repository</a></li>
+                <li><a href="https://docs.google.com/presentation/d/1FLY3mvf5Me_v5xR79IunB9NMKC1RuKhO/edit?usp=sharing&ouid=113610406294942022290&rtpof=true&sd=true">Presentation</a></li>
+                <li><a href="https://www.linkedin.com/posts/eslam-ragaei_ai-rag-telecom-activity-7455708532437413888-bv-H?utm_source=share&utm_medium=member_desktop&rcm=ACoAAFIuIIIB0geEzKb23RxspKg1baVS4lIq-WU">LinkedIn post</a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    © 2026 Telecom AI Project — Built with AI & Engineering Excellence
+</footer>
+
+</body>
+</html>
